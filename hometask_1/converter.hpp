@@ -2,7 +2,6 @@
 #include <bitset>
 #include <iostream>
 #include <vector>
-#include "formatter.hpp"
 #include <stdexcept>
 #define ERROR -1
 #define OK 0

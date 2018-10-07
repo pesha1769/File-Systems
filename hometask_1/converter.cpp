@@ -37,9 +37,9 @@ int pack_utf32_to_utf8 (uint32_t utf32_symbol, vector<uint8_t> &result) {
         result.push_back(get_10xxxxxx(utf32_symbol));
     }
     else {
-        throw runtime_error(Formatter()
-                                 << "This character cannot be fit into UTF-32: "
-                                 << utf32_symbol);
+        throw runtime_error("Conversion failed!");
+                                
+                                
         return ERROR;
     }
 
@@ -72,9 +72,7 @@ vector<uint32_t>from_utf8(const vector<uint8_t> &utf8_string) {
                     temp += ((uint32_t)utf8_string[i++] & 0b00111111)
                             << (2 - j)*6;
                 else {
-                    throw runtime_error(Formatter() << "Expected 4 bytes but "
-                                        << "byte #" << j+2 << " is "
-                                        << bitset<8>(utf8_string[i]));
+                    throw runtime_error("Expected 4 bytes");
                 }
             }
         }
@@ -85,9 +83,7 @@ vector<uint32_t>from_utf8(const vector<uint8_t> &utf8_string) {
                     temp += ((uint32_t)utf8_string[i++] & 0b00111111)
                             << (1 - j)*6;
                 else {
-                    throw runtime_error(Formatter() << "Expected 3 bytes but "
-                                        << "byte #" << j+2 << " is "
-                                        << bitset<8>(utf8_string[i]));
+                   throw runtime_error("Expected 3 bytes");
                 }
             }
         }
@@ -96,9 +92,7 @@ vector<uint32_t>from_utf8(const vector<uint8_t> &utf8_string) {
             if (is_10xxxxxx(utf8_string[i]))
                 temp += ((uint32_t)utf8_string[i++] & 0b00111111);
             else {
-                throw runtime_error(Formatter() << "Expected 2 bytes but "
-                                    << "byte #" << 2 << " is "
-                                    << bitset<8>(utf8_string[i]));
+               throw runtime_error("Expected 2 bytes");
             }
         }
         else
