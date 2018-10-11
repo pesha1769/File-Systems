@@ -65,7 +65,7 @@ vector<uint32_t>from_utf8(const vector<uint8_t> &utf8_string) {
 
     for (int i = 0; i < utf8_string.size();)
     {
-        if (((utf8_string[i] >> 3) ^ 0b00011110) == 0) {
+        if ((utf8_string[i] >> 3) == 0b00011110)  {
             temp += ((uint32_t)utf8_string[i++] & 0b00000111) << 18;
             for (int j = 0; j < 3; ++j) {
                 if (is_10xxxxxx(utf8_string[i]))
@@ -76,7 +76,7 @@ vector<uint32_t>from_utf8(const vector<uint8_t> &utf8_string) {
                 }
             }
         }
-        else if (((utf8_string[i] >> 4) ^ 0b0001110) == 0) {
+        else if ((utf8_string[i] >> 4) == 0b0001110) {
             temp += ((uint32_t)utf8_string[i++] & 0b00001111) << 12;
             for (int j = 0; j < 2; ++j) {
                 if (is_10xxxxxx(utf8_string[i]))
@@ -87,7 +87,7 @@ vector<uint32_t>from_utf8(const vector<uint8_t> &utf8_string) {
                 }
             }
         }
-        else if (((utf8_string[i] >> 5) ^ 0b000110) == 0) {
+        else if ((utf8_string[i] >> 5) == 0b000110) {
             temp += ((uint32_t)utf8_string[i++] & 0b00011111) << 6;
             if (is_10xxxxxx(utf8_string[i]))
                 temp += ((uint32_t)utf8_string[i++] & 0b00111111);
