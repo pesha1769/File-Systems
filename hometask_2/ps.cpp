@@ -20,19 +20,45 @@ public:
             	file.close();
         }
         catch ( const std::ifstream::failure& error){
-           throw error;
+           std::cerr << "Cannot read proc Name:" << error.what() << '\n';
         }
     }
 
-    void print_pid_name(){
-	std::cout << Pid << "\t\t\t" << Name << std::endl; 
-	}
+    Process() {}
+
+    int Print_pid(){
+        return this->Pid;
+    }
+
+    std::string Print_name(){
+        return this->Name;
+    }
+
+
 
 private:
     int Pid;
     std::string Name;
 };
 
+
+
+
+class View {
+public:
+	View(Process &process) {
+            this->process = process;
+        }
+
+        View() {}
+  
+        void print_pid_name() {
+            std::cout << process.Print_pid() << "\t\t\t" << process.Print_name() << std::endl;
+        }
+
+    private:
+        Process process;
+};
 
 
 int main() {
@@ -46,23 +72,24 @@ int main() {
     }
 
     struct dirent* ent;
-    std::string pid;
 
     while ((ent = readdir (dir)) != nullptr) {
+	std::string pid;
         pid = ent->d_name;
 
         try {
             int pid_int = std::stoi(pid);
-            processes.emplace_back(Process(pid_int));
+            processes.emplace_back(pid_int);
         }
-        catch (std::invalid_argument& err)
-	{}
+        catch (const  std::invalid_argument& err){
+	    std::cerr << "Invalid argument: " << err.what() << '\n';	
+        }
         
     }
     closedir (dir);
 
     for (auto& proc : processes)
-        proc.print_pid_name();
+        View(proc).print_pid_name();
 
     return 0;
 }
